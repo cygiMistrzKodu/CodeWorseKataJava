@@ -49,6 +49,7 @@ public class LambdaAndMapExampleTest {
 
 	}
 	
+	@FunctionalInterface
 	public interface intPrdicate {
 		boolean test(int i);
 	}
