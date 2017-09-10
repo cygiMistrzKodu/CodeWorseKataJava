@@ -9,6 +9,8 @@ import java.util.List;
 import org.junit.Test;
 
 public class SomeEgyptianFractionsKata {
+	
+	private final static double ACCEPTABLE_TOLERANCE = 7.65790E-9 ;
 
 	@Test
 	public void test() {
@@ -16,8 +18,9 @@ public class SomeEgyptianFractionsKata {
 		// System.out.println(convertDecimalToFraction(0.00395256916996047));
 
 		// System.out.println(convertDecimalToFraction(0.00000155268413));
-		// System.out.println(convertDecimalToFraction(0.000001552684125));
-		// System.out.println(convertDecimalToFraction(6.00000000000000));
+//		 System.out.println(convertDecimalToFraction(0.0000015526841250));
+//		 System.out.println(convertDecimalToFraction(6.00000000000000));
+//		 System.out.println(convertDecimalToFraction(0.0833333333333333));
 
 		// 0.00909090909090909
 
@@ -27,16 +30,17 @@ public class SomeEgyptianFractionsKata {
 		//
 		// System.out.println(numbers[0]+"/"+numbers[1]);
 
-		// decompose("21", "23");
-		 decompose("12", "4");
+		 decompose("21", "23");
+//		 decompose("12", "4");
 //		 decompose("0", "2");
 //		 decompose("12", "2");
-		// decompose("9", "10");
-		// decompose("34", "645");
+//		 decompose("9", "10");
+//		 decompose("34", "645");
 		// decompose("3", "4");
 		// decompose("5", "8");
 //		 decompose("13", "12");
 //		decompose("24", "12");
+//		decompose("11", "12");
 
 	}
 
@@ -45,7 +49,7 @@ public class SomeEgyptianFractionsKata {
 		BigDecimal numerator = new BigDecimal(nrStr);
 		BigDecimal denominator = new BigDecimal(drStr);
 
-		BigDecimal decimalFraction = numerator.divide(denominator, 14, RoundingMode.HALF_UP);
+		BigDecimal decimalFraction = numerator.divide(denominator, 16, RoundingMode.HALF_UP);
 
 		BigDecimal currentDenominator = new BigDecimal(2);
 		BigDecimal currentFractionSum = new BigDecimal(0);
@@ -59,10 +63,12 @@ public class SomeEgyptianFractionsKata {
 
 			return "";
 		}
+		
+		BigDecimal diffrentCurrentFractionAndCurrentFractionsSum;
 
 		do {
 
-			BigDecimal tmpFraction = BigDecimal.ONE.divide(currentDenominator, 14, RoundingMode.HALF_UP);
+			BigDecimal tmpFraction = BigDecimal.ONE.divide(currentDenominator, 16, RoundingMode.HALF_UP);
 			currentFractionSum = currentFractionSum.add(tmpFraction);
 
 			if (currentFractionSum.compareTo(decimalFraction) <= 0) {
@@ -82,9 +88,19 @@ public class SomeEgyptianFractionsKata {
 			System.out.println("   decimalFraction: " + decimalFraction);
 			System.out.println("currentDenominator: " + currentDenominator);
 			System.out.println("ListOfEgyptianFractions: " + ListOfEgyptianFractions);
+			
+			 diffrentCurrentFractionAndCurrentFractionsSum = decimalFraction.subtract(currentFractionSum);
+			
+						System.out.println("diffrentCurrentFractionAndCurrentFractionSum: " + diffrentCurrentFractionAndCurrentFractionsSum);
+						
+//						diffrentCurrentFractionAndCurrentFractionSum.compareTo(val)
+			
 
-		} while (currentFractionSum.compareTo(decimalFraction) < 0
-				&& currentDenominator.compareTo(new BigDecimal(1000000)) != 0);
+//		} while (currentFractionSum.compareTo(decimalFraction) < 0
+//				&& currentDenominator.compareTo(new BigDecimal(1000000)) != 0);
+//	} while (currentFractionSum.compareTo(decimalFraction) < 0
+//			&& diffrentCurrentFractionAndCurrentFractionsSum.compareTo(new BigDecimal(ACCEPTABLE_TOLERANCE)) > 0 );
+	} while (diffrentCurrentFractionAndCurrentFractionsSum.compareTo(new BigDecimal(ACCEPTABLE_TOLERANCE)) > 0 );
 		// } while (currentDenominator.compareTo(new BigDecimal(644049)) < 0);
 
 		System.out.println(decimalFraction.toString());
