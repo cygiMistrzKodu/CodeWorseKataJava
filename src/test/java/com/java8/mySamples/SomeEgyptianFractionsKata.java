@@ -1,5 +1,7 @@
 package com.java8.mySamples;
 
+import static org.junit.Assert.*;
+
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.math.RoundingMode;
@@ -12,10 +14,18 @@ import org.junit.Test;
 public class SomeEgyptianFractionsKata {
 
 //	private final static double ACCEPTABLE_TOLERANCE = 7.65790E-9;
-	private final static double ACCEPTABLE_TOLERANCE = 7.65790E-9;
+	private final static double ACCEPTABLE_TOLERANCE = 0.1E-8;
 
 	@Test
-	public void test() {
+	public void test66_100() {
+		
+		assertEquals( "[1/2, 1/7, 1/59, 1/5163, 1/53307975]", decompose("66", "100"));  
+		
+	}
+	
+	
+	@Test
+	public void test22_23() {
 
 		// System.out.println(convertDecimalToFraction(0.00395256916996047));
 
@@ -50,59 +60,64 @@ public class SomeEgyptianFractionsKata {
 //		decompose("13", "12");
 		// decompose("24", "12");
 //		 decompose("11", "12");
-		 fractionsList =  decompose("66", "100");
+//		 fractionsList =  decompose("66", "100");
+//		 fractionsList =  decompose("22", "23");
 		 
-		 System.out.println(fractionsList);
+//		 fractionsList =  decompose("3000", "4187");
 		 
-		 System.out.println((System.currentTimeMillis() - timeStart) /1000 % 60);
+//		 System.out.println(fractionsList);
+//		 
+//		 System.out.println((System.currentTimeMillis() - timeStart) /1000 % 60);
+		 
+//		 assertEquals( decompose("66", "100"), "[1/2, 1/7, 1/59, 1/5163, 1/53307975]");  
+		 assertEquals("[1/2, 1/3, 1/9, 1/83, 1/34362]", decompose("22", "23"));  
 
 	}
 
 	public static String decompose(String nrStr, String drStr) {
 
-		BigDecimal numerator = new BigDecimal(nrStr);
-		BigDecimal denominator = new BigDecimal(drStr);
+        double numerator = Double.parseDouble(nrStr);
+		double denominator = Double.parseDouble(drStr);
 
-		BigDecimal decimalFraction = numerator.divide(denominator, 16, RoundingMode.HALF_UP);
+		double decimalFraction = numerator / denominator;
 
-		BigDecimal currentDenominator = new BigDecimal(2);
-		BigDecimal currentFractionSum = new BigDecimal(0);
+		double currentDenominator = 2;
+		double currentFractionSum = 0;
 
-		List<BigDecimal> listOfEgyptianFractionsInDecimal = new ArrayList<>();
+		List<Double> listOfEgyptianFractionsInDecimal = new ArrayList<>();
 
-		if (numerator.remainder(denominator).compareTo(BigDecimal.ZERO) == 0
-				&& numerator.compareTo(BigDecimal.ZERO) != 0) {
+		if (numerator%denominator == 0 && numerator != 0) {
 
-			listOfEgyptianFractionsInDecimal.add(decimalFraction.setScale(0));
-
-			return listOfEgyptianFractionsInDecimal.toString();
+			return "["+String.valueOf((int) decimalFraction)+"]";
 		}
 
-		BigDecimal currentFractionAndCurrentFractionsSumDiffrence;
+		double currentFractionAndCurrentFractionsSumDiffrence;
 
 		do {
 
-			BigDecimal tmpFraction = BigDecimal.ONE.divide(currentDenominator, 16, RoundingMode.HALF_UP);
-			currentFractionSum = currentFractionSum.add(tmpFraction);
+			double tmpFraction = 1 / currentDenominator ;
+			currentFractionSum = currentFractionSum += tmpFraction;
 
-			if (currentFractionSum.compareTo(decimalFraction) <= 0) {
+			if (currentFractionSum <= decimalFraction) {
 
 				listOfEgyptianFractionsInDecimal.add(tmpFraction);
 
 			}
 
-			if (currentFractionSum.compareTo(decimalFraction) > 0) {
+			if (currentFractionSum >= decimalFraction) {
 
-				currentFractionSum = currentFractionSum.subtract(tmpFraction);
+				currentFractionSum = currentFractionSum -= tmpFraction;
 			}
 
-			currentDenominator = currentDenominator.add(BigDecimal.ONE);
-			currentFractionAndCurrentFractionsSumDiffrence = decimalFraction.subtract(currentFractionSum);
+			currentDenominator = currentDenominator += 1;
+			currentFractionAndCurrentFractionsSumDiffrence = decimalFraction - currentFractionSum;
 
-		} while (currentFractionAndCurrentFractionsSumDiffrence.compareTo(new BigDecimal(ACCEPTABLE_TOLERANCE)) > 0);
+		} while (currentFractionAndCurrentFractionsSumDiffrence > ACCEPTABLE_TOLERANCE);
 
 		List<String> egyptianfractions = listOfEgyptianFractionsInDecimal.stream()
-				.map(df -> convertDecimalToFraction(df.doubleValue()))
+//				.map(df -> BigDecimal.valueOf(df).setScale(24,RoundingMode.UP).doubleValue())
+				.peek(df -> System.out.println(df))
+				.map(df -> convertDecimalToFraction(df))
 				.collect(Collectors.toList());
 
 		return egyptianfractions.toString();
