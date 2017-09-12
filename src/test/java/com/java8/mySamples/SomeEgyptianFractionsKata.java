@@ -78,8 +78,8 @@ public class SomeEgyptianFractionsKata {
 
 	@Test
 	public void test5_121() {
-				
-//		System.out.println(Double.MAX_VALUE);
+
+		// System.out.println(Double.MAX_VALUE);
 
 		assertEquals("[1/25, 1/757, 1/763309, 1/873960180913, 1/1527612795642093418846225]", decompose("5", "121"));
 
@@ -118,7 +118,7 @@ public class SomeEgyptianFractionsKata {
 			long[] reduceFraction = reduceFraction(new long[] { numeratorSecondFraction, denominatorSecondFraction });
 
 			if (reduceFraction[0] > 1) {
-				
+
 				numerator = (double) reduceFraction[0];
 				denominator = (double) reduceFraction[1];
 
@@ -126,23 +126,15 @@ public class SomeEgyptianFractionsKata {
 
 			if (numeratorSecondFraction == 1) {
 
-//				System.out.println("------------------PRZED OStatnim------------------------------");
-//				listOfFractions.forEach(f -> System.out.println(f[0] + "/" + f[1]));
-//				System.out.println("------------------------------------------------");
-
 				long[] summedFractions = sumFractions(listOfFractions);
 
 				long[] fractionInBegin = new long[] { numeratorInBegin.longValue(), denominatorInBegin.longValue() };
 
 				long[] lastfraction = substractFractions(fractionInBegin, summedFractions);
-				
-				long[] lastfractionReduced = reduceFraction(lastfraction);
-				
-				listOfFractions.add(lastfractionReduced);
 
-//				System.out.println("------------------------------------------------");
-//				listOfFractions.forEach(f -> System.out.println(f[0] + "/" + f[1]));
-//				System.out.println("------------------------------------------------");
+				long[] lastfractionReduced = reduceFraction(lastfraction);
+
+				listOfFractions.add(lastfractionReduced);
 
 				break;
 
@@ -150,22 +142,20 @@ public class SomeEgyptianFractionsKata {
 
 		}
 
-		return listOfFractions.stream().map(f -> f[0] + "/" + f[1]).collect(Collectors.toList()).toString();
+		return listOfFractions.stream()
+				.map(f -> f[0] + "/" + f[1])
+				.collect(Collectors.toList()).toString();
 
 	}
+	
 
-	@Test
-	@Ignore
-	public void reduceFractionTest() {
-
-		long[] fraction = new long[] { 4, 213231900 };
-
-		long[] fractionReduced = reduceFraction(fraction);
-
-		System.out.println("Reduce Fraction: " + fractionReduced[0] + " " + fractionReduced[1]);
-
+	static private double congruenceMod(double a, double b) {
+		
+		return ((a % b) + b) % b;
+		
 	}
-
+	
+	
 	private static long[] reduceFraction(long[] fraction) {
 
 		long gratestCommonDivisiorSecondFraction = gratestCommonDivisor(fraction[0], fraction[1]);
@@ -176,51 +166,23 @@ public class SomeEgyptianFractionsKata {
 		return new long[] { numeratorFractionReduced, denominatorFractionReduced };
 	}
 
-	@Test
-	@Ignore
-	public void sumFractionTest() {
-
-		List<long[]> fractionTest = new ArrayList<>();
-		fractionTest.add(new long[] { 1, 2 });
-		fractionTest.add(new long[] { 1, 7 });
-		fractionTest.add(new long[] { 1, 59 });
-		fractionTest.add(new long[] { 1, 5163 });
-
-		long[] fractionsSum = sumFractions(fractionTest);
-
-		System.out.println("Suma: " + fractionsSum[0] + " " + fractionsSum[1]);
-
-	}
-
 	static private long[] sumFractions(List<long[]> fractions) {
 
 		long[] fractionsDenominators = new long[fractions.size()];
 
 		LongStream.range(0, fractions.size())
-				.map(index -> fractionsDenominators[(int) index] = fractions.get((int) index)[1]).count();
+				.map(index -> fractionsDenominators[(int) index] = fractions.get((int) index)[1])
+				.count();
 
 		long commonDenominatorFromFractions = leastCommonMultiple(fractionsDenominators);
 
-		long numeratorsSum = fractions.stream().map(f -> (commonDenominatorFromFractions / f[1]) * f[0])
+		long numeratorsSum = fractions.stream()
+				.map(f -> (commonDenominatorFromFractions / f[1]) * f[0])
 				.collect(Collectors.summingLong(Long::longValue));
 
 		long[] fractionsSum = { numeratorsSum, commonDenominatorFromFractions };
 
 		return fractionsSum;
-	}
-
-	@Test
-	@Ignore
-	public void substractFractionTest() {
-
-		long[] fractionFirst = new long[] { 66, 100 };
-
-		long[] fractionSecond = new long[] { 2814661, 4264638 };
-
-		long[] fractionLast = substractFractions(fractionFirst, fractionSecond);
-
-		System.out.println("Last Fraction: " + fractionLast[0] + " " + fractionLast[1]);
-
 	}
 
 	static private long[] substractFractions(long[] minuendFraction, long[] subtrahendFraction) {
@@ -246,22 +208,6 @@ public class SomeEgyptianFractionsKata {
 
 	}
 
-	private static long gratestCommonDivisor(long[] input) {
-
-		long result = input[0];
-		for (int i = 1; i < input.length; i++) {
-
-			result = gratestCommonDivisor(result, input[i]);
-		}
-		return result;
-
-	}
-
-	static private double congruenceMod(double a, double b) {
-
-		return ((a % b) + b) % b;
-
-	}
 
 	private static long leastCommonMultiple(long a, long b) {
 		return a * (b / gratestCommonDivisor(a, b));
@@ -274,6 +220,63 @@ public class SomeEgyptianFractionsKata {
 			result = leastCommonMultiple(result, input[i]);
 
 		return result;
+	}
+	
+	
+	
+	
+
+	private static long gratestCommonDivisor(long[] input) {
+
+		long result = input[0];
+		for (int i = 1; i < input.length; i++) {
+
+			result = gratestCommonDivisor(result, input[i]);
+		}
+		return result;
+
+	}
+
+	@Test
+	@Ignore
+	public void reduceFractionTest() {
+
+		long[] fraction = new long[] { 4, 213231900 };
+
+		long[] fractionReduced = reduceFraction(fraction);
+
+		System.out.println("Reduce Fraction: " + fractionReduced[0] + " " + fractionReduced[1]);
+
+	}
+
+	@Test
+	@Ignore
+	public void sumFractionTest() {
+
+		List<long[]> fractionTest = new ArrayList<>();
+		fractionTest.add(new long[] { 1, 2 });
+		fractionTest.add(new long[] { 1, 7 });
+		fractionTest.add(new long[] { 1, 59 });
+		fractionTest.add(new long[] { 1, 5163 });
+
+		long[] fractionsSum = sumFractions(fractionTest);
+
+		System.out.println("Suma: " + fractionsSum[0] + " " + fractionsSum[1]);
+
+	}
+
+	@Test
+	@Ignore
+	public void substractFractionTest() {
+
+		long[] fractionFirst = new long[] { 66, 100 };
+
+		long[] fractionSecond = new long[] { 2814661, 4264638 };
+
+		long[] fractionLast = substractFractions(fractionFirst, fractionSecond);
+
+		System.out.println("Last Fraction: " + fractionLast[0] + " " + fractionLast[1]);
+
 	}
 
 	static private String convertDecimalToFraction(double x) {
