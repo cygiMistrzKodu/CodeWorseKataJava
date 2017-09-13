@@ -2,8 +2,6 @@ package com.java8.mySamples;
 
 import static org.junit.Assert.assertEquals;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -30,16 +28,6 @@ public class SomeEgyptianFractionsKata {
 		long LNW = leastCommonMultiple(denominators);
 
 		System.out.println(LNW);
-
-	}
-
-	@Test
-	@Ignore
-	public void testFractionLook() {
-
-		System.out.println("--------No i jaki ulamek----------------");
-		System.out.println(convertDecimalToFraction(0.133333333333333));
-		System.out.println("------------------------");
 
 	}
 
@@ -79,16 +67,36 @@ public class SomeEgyptianFractionsKata {
 	@Test
 	public void test5_121() {
 
-		// System.out.println(Double.MAX_VALUE);
-
 		assertEquals("[1/25, 1/757, 1/763309, 1/873960180913, 1/1527612795642093418846225]", decompose("5", "121"));
 
 	}
 
 	@Test
 	public void test22_23() {
-
+		
 		assertEquals("[1/2, 1/3, 1/9, 1/83, 1/34362]", decompose("22", "23"));
+
+	}
+	
+	
+	@Test
+	public void test3_4() {
+		
+		assertEquals("[1/2, 1/4]", decompose("3", "4"));
+
+	}
+	
+	@Test 
+	public void test12_4() {
+		
+		assertEquals("[3]", decompose("12", "4"));
+
+	}
+	
+	@Test 
+	public void test1_0_2() {
+		
+		assertEquals("[]", decompose("0", "2"));
 
 	}
 
@@ -103,7 +111,18 @@ public class SomeEgyptianFractionsKata {
 		List<long[]> listOfFractions = new ArrayList<>();
 
 		int numeratorFraction = 1;
-
+		
+		if (numeratorInBegin == 0) {
+			
+		 return	"[]";
+			
+		}
+		
+		if (numeratorInBegin >= denominatorInBegin) {
+			
+			return "[" + (numeratorInBegin.intValue()/denominatorInBegin.intValue())  + "]";
+		}
+		
 		for (;;) {
 
 			long denominatorFraction = (long) Math.ceil(denominator.doubleValue() / numerator.doubleValue());
@@ -124,7 +143,7 @@ public class SomeEgyptianFractionsKata {
 
 			}
 
-			if (numeratorSecondFraction == 1) {
+			if (reduceFraction[0] == 1) {
 
 				long[] summedFractions = sumFractions(listOfFractions);
 
@@ -139,7 +158,7 @@ public class SomeEgyptianFractionsKata {
 				break;
 
 			}
-
+		
 		}
 
 		return listOfFractions.stream()
@@ -278,100 +297,19 @@ public class SomeEgyptianFractionsKata {
 		System.out.println("Last Fraction: " + fractionLast[0] + " " + fractionLast[1]);
 
 	}
-
-	static private String convertDecimalToFraction(double x) {
-		if (x < 0) {
-			return "-" + convertDecimalToFraction(-x);
-		}
-		double tolerance = 1.0E-6;
-		double h1 = 1;
-		double h2 = 0;
-
-		double k1 = 0;
-		double k2 = 1;
-		double b = x;
-		do {
-			double a = Math.floor(b);
-			double aux = h1;
-
-			h1 = a * h1 + h2;
-			h2 = aux;
-
-			aux = k1;
-			k1 = a * k1 + k2;
-
-			k2 = aux;
-			b = 1 / (b - a);
-
-		} while (Math.abs(x - h1 / k1) > x * tolerance);
-
-		return (int) h1 + "/" + (int) k1;
-	}
-
-	static int[] toFractionPos(BigDecimal x) {
-
-		String[] parts = x.toString().split("\\.");
-
-		System.out.println(parts[1].length());
-
-		BigDecimal denominator = BigDecimal.TEN.pow(parts[1].length());
-
-		System.out.println("denominator: " + denominator);
-		// BigDecimal denominator = BigDecimal.TEN.pow(1);
-		BigDecimal numerator = (new BigDecimal(parts[0]).multiply(denominator)).add(new BigDecimal(parts[1]));
-
-		System.out.println("numerator: " + numerator);
-
-		return reduceFraction(numerator.intValue(), denominator.intValue());
-	}
-
-	static int[] reduceFraction(int numerator, int denominator) {
-
-		System.out.println("numerator: " + numerator + " denominator " + denominator);
-
-		int gratestCommonDivisior = BigInteger.valueOf(numerator).gcd(BigInteger.valueOf(denominator)).intValue();
-
-		System.out.println("Gratest commond divisor: " + gratestCommonDivisior);
-
-		int[] rf = { numerator / gratestCommonDivisior, denominator / gratestCommonDivisior };
-		return rf;
-	}
-
-	static private String convertDecimalToFractionDebug(double x) {
-		if (x < 0) {
-			return "-" + convertDecimalToFractionDebug(-x);
-		}
-		double tolerance = 1.0E-6;
-		double h1 = 1;
-		double h2 = 0;
-
-		double k1 = 0;
-		double k2 = 1;
-		double b = x;
-		do {
-			double a = Math.floor(b);
-			System.out.println("a = Math.floor(b) : " + a);
-			double aux = h1;
-			System.out.println("aux = h1 : " + aux);
-			h1 = a * h1 + h2;
-			System.out.println("h1 = a*h1+h2 : " + h1);
-			h2 = aux;
-			System.out.println("h2 = aux: " + h2);
-			aux = k1;
-			System.out.println("aux = k1: " + aux);
-			k1 = a * k1 + k2;
-			System.out.println("k1 = a*k1+k2: " + k1);
-			k2 = aux;
-			System.out.println("k2 = aux: " + k2);
-			b = 1 / (b - a);
-			System.out.println("b = 1/(b-a): " + b);
-			System.out.println("------------------------------------------------");
-			System.out.println("Math.abs(x-h1/k1: " + Math.abs(x - h1 / k1));
-			System.out.println("x*tolerance: " + x * tolerance);
-			System.out.println("------------------------------------------------");
-		} while (Math.abs(x - h1 / k1) > x * tolerance);
-
-		return (int) h1 + "/" + (int) k1;
-	}
+	
+	
+	 private static void testing(String actual, String expected) {
+	        assertEquals(expected, actual);
+	    }
+	 
+	 @Test
+	    public void test1() {
+	        testing(decompose("3", "4"), "[1/2, 1/4]");
+	        testing(decompose("12", "4"), "[3]");
+	        testing(decompose("0", "2"), "[]"); 
+	        testing(decompose("9", "10"), "[1/2, 1/3, 1/15]");
+	    }
+	
 
 }
