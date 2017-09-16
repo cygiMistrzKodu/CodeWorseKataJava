@@ -77,4 +77,11 @@ public class FindTheUnknownDigitKataTest {
 
 	}
 
+	@Test
+	public void test9() {
+			
+		assertEquals(1, FindTheUnknownDigitKata.solveExpression("??605*-63=-73???5"));
+		
+	}
+
 }
