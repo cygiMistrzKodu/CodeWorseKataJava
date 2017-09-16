@@ -1,9 +1,11 @@
 package com.java8.mySamples;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Predicate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -22,16 +24,18 @@ public class FindTheUnknownDigitKata {
 		operations.put("-", t -> t.get(0) - t.get(1) == t.get(2));
 		
 	}
+	
+   private static  Set<Integer> existingDigitsInEquation = new HashSet<>();
 
 	public static int solveExpression(final String expression) {
 		int missingDigit = -1;
-		
-		if (expression.equals("?*11=??")) {
-			return 2;  // No make sane why not ??  Why 2 Should'nt be 1 ??
-		}
 
 		List<Integer> numbersInEquation = new ArrayList<>();
 		List<String> numbersEquationInText = new ArrayList<>();
+		
+		existingDigitsInEquation.clear();		
+		readDigits(expression);
+		
 
 		Pattern numbersInEquationPattern = Pattern.compile(ONLY_NUMBER_PATTERN);
 		Pattern operationInEquationPattern = Pattern.compile(OPERATION_SIGN_PATTERN);
@@ -52,6 +56,11 @@ public class FindTheUnknownDigitKata {
 			operationMatcher = operationInEquationPattern.matcher(equation);
 
 			numbersEquationInText.clear();
+			
+			if (existingDigitsInEquation.contains(uknownDigit)) {
+				continue;
+			}
+			
 
 			while (numberMatcher.find()) {
 
@@ -96,5 +105,18 @@ public class FindTheUnknownDigitKata {
 
 		return false;
 	}
+	
+	private static void readDigits(String expresion) {
+		
+		Pattern digitPattern = Pattern.compile("\\d");
+		Matcher digitMatcher = digitPattern.matcher(expresion);
+		
+		while (digitMatcher.find()) {
 
+			existingDigitsInEquation.add(Integer.parseInt(digitMatcher.group()));
+
+		}
+  
+	}
+	
 }
