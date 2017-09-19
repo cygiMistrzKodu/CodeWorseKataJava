@@ -7,14 +7,16 @@ import org.junit.Test;
 
 public class GettingAlongWithIntegerPartitionsKataTest {
 
-	@Test @Ignore
+	@Test 
 	public void test() {
 
-		assertEquals("Range: 1 Average: 1.50 Median: 1.50", GettingAlongWithIntegerPartitionsKata.part(2));
+//		assertEquals("Range: 1 Average: 1.50 Median: 1.50", GettingAlongWithIntegerPartitionsKata.part(2));
+//		assertEquals("Range: 1 Average: 1.50 Median: 1.50", GettingAlongWithIntegerPartitionsKata.part(8));
+		assertEquals("Range: 1 Average: 1.50 Median: 1.50", GettingAlongWithIntegerPartitionsKata.part(5));
 
 	}
 	
-	@Test
+	@Test @Ignore
 	public void generateUniquePartionsOfNumberTest() {
 		
 //		generateUniquePartition(4);
