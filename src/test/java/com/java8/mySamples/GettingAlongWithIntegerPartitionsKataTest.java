@@ -10,11 +10,19 @@ public class GettingAlongWithIntegerPartitionsKataTest {
 	@Test 
 	public void test() {
 
-//		assertEquals("Range: 1 Average: 1.50 Median: 1.50", GettingAlongWithIntegerPartitionsKata.part(2));
-//		assertEquals("Range: 1 Average: 1.50 Median: 1.50", GettingAlongWithIntegerPartitionsKata.part(8));
-		assertEquals("Range: 1 Average: 1.50 Median: 1.50", GettingAlongWithIntegerPartitionsKata.part(5));
+		assertEquals("Range: 1 Average: 1.50 Median: 1.50", GettingAlongWithIntegerPartitionsKata.part(2));		
 
 	}
+	
+	@Test 
+	public void test2() {
+
+		assertEquals("Range: 5 Average: 3.50 Median: 3.50", GettingAlongWithIntegerPartitionsKata.part(5));
+
+	}
+	
+	
+	
 	
 	@Test @Ignore
 	public void generateUniquePartionsOfNumberTest() {
