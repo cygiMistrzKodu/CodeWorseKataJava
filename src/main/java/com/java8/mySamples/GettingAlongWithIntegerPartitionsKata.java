@@ -27,7 +27,7 @@ public class GettingAlongWithIntegerPartitionsKata {
 
 	if (productList.size() % 2 == 1) {
 
-	    median = productList.get((int) Math.floor(productList.size())).doubleValue();
+	    median = productList.get((int) Math.floor(productList.size()/2)).doubleValue();
 	}
 
 	if (productList.size() % 2 == 0) {

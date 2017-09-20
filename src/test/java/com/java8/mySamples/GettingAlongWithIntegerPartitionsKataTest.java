@@ -21,6 +21,14 @@ public class GettingAlongWithIntegerPartitionsKataTest {
 
 	}
 	
+	@Test 
+	public void test3() {
+
+		assertEquals("Range: 2 Average: 2.00 Median: 2.00", GettingAlongWithIntegerPartitionsKata.part(3));
+
+	}
+	
+	
 	
 	
 	
